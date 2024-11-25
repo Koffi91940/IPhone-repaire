@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réparation iPhone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007aff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            margin: 20px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, textarea, button {
+            padding: 12px; /* Augmenter la taille du padding pour améliorer l'accessibilité */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%; /* Permet aux champs de s'adapter à la largeur de l'écran */
+            box-sizing: border-box; /* S'assure que les paddings et bordures sont inclus dans la largeur */
+        }
+        button {
+            background-color: #007aff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Ajout d'une transition pour l'effet de hover */
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        /* Media query pour les petits écrans */
+        @media (max-width: 600px) {
+            main {
+                margin: 10px;
+                padding: 15px;
+            }
+            header {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Service de Réparation iPhone</h1>
+        <p>Besoin d'aide pour réparer votre iPhone ? Envoyez-nous votre demande !</p>
+    </header>
+    <main>
+        <h2>Formulaire de Demande</h2>
+        <form id="repairForm">
+            <label for="name">Nom :</label>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+            <label for="issue">Problème rencontré :</label>
+            <textarea id="issue" name="issue" rows="4" placeholder="Décrivez votre problème..." required></textarea>
+
+            <button type="submit">Envoyer la Demande</button>
+        </form>
+        <p id="message" style="color: green; font-weight: bold;"></p>
+    </main>
+    <script>
+        document.getElementById('repairForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Récupérer les données du formulaire
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const issue = document.getElementById('issue').value;
+
+            // Lien de l'API Telegram pour envoyer les données du formulaire
+            const telegramToken = '7313453138:AAGQWRmXIAlUXnhygM4-4gmVH8TqzbIQO1o';  // Remplacez par le token de votre bot
+            const chatId = '@reparateurfou';  // Remplacez par le nom d'utilisateur de votre canal ou l'ID de votre canal privé
+
+            // Créer l'URL de l'API Telegram
+            const telegramApiUrl = `https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=Demande%20de%20réparation%20:%0ANom:%20${encodeURIComponent(name)}%0AEmail:%20${encodeURIComponent(email)}%0AProblème:%20${encodeURIComponent(issue)}`;
+
+            // Envoyer le message via l'API Telegram
+            fetch(telegramApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Afficher le message de succès
+                    document.getElementById('message').textContent = 'Votre demande a été envoyée avec succès !';
+                })
+                .catch(error => {
+                    // Afficher un message d'erreur
+                    document.getElementById('message').textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                });
+        });
+    </script>
+</body>
+</html>
